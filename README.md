@@ -53,7 +53,7 @@ graph TD
 ### 1. Backend Setup (Flask)
 ```bash
 # Clone repository
-git clone https://github.com/adnan/roadlens-gemma.git
+git clone https://github.com/shaikhadnan0123/roadlens-gemma.git
 cd roadlens-gemma
 
 # Install Python dependencies

@@ -3,7 +3,7 @@
 **Project Name:** RoadLens AI  
 **Track:** Best Open-Source AI Project  
 **Author:** Adnan  
-**Repository:** [https://github.com/adnan/roadlens-gemma](https://github.com/adnan/roadlens-gemma)  
+**Repository:** [https://github.com/shaikhadnan0123/roadlens-gemma](https://github.com/shaikhadnan0123/roadlens-gemma)  
 **License:** MIT License (`LICENSE`)
 
 ---
