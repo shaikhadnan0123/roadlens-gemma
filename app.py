@@ -21,7 +21,7 @@ OLLAMA_HOST = os.getenv("OLLAMA_HOST", "http://localhost:11434")
 OLLAMA_MODEL = os.getenv("OLLAMA_MODEL", "llava")
 
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")
-GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-2.5-flash")
+GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-2.0-flash")
 
 # Initialize Gemini Client if API key is provided
 genai_client = None
@@ -255,24 +255,29 @@ def analyze_road_issue():
 
         # Strategy 2: Gemini API fallback if key available
         if GEMINI_API_KEY and (genai_client or genai_legacy):
-            try:
-                print(f"[RoadLens Backend] Running Gemini API fallback call ({GEMINI_MODEL})...")
-                if genai_client:
-                    response = genai_client.models.generate_content(
-                        model=GEMINI_MODEL,
-                        contents=[SYSTEM_PROMPT, image]
-                    )
-                    raw_text = response.text
-                elif genai_legacy:
-                    model = genai_legacy.GenerativeModel(GEMINI_MODEL)
-                    response = model.generate_content([SYSTEM_PROMPT, image])
-                    raw_text = response.text
+            candidate_models = [GEMINI_MODEL, "gemini-2.0-flash", "gemini-1.5-flash"]
+            # Deduplicate preserving order
+            candidate_models = list(dict.fromkeys(candidate_models))
+            
+            for m in candidate_models:
+                try:
+                    print(f"[RoadLens Backend] Running Gemini API fallback call ({m})...")
+                    if genai_client:
+                        response = genai_client.models.generate_content(
+                            model=m,
+                            contents=[SYSTEM_PROMPT, image]
+                        )
+                        raw_text = response.text
+                    elif genai_legacy:
+                        model = genai_legacy.GenerativeModel(m)
+                        response = model.generate_content([SYSTEM_PROMPT, image])
+                        raw_text = response.text
 
-                parsed = extract_json_from_text(raw_text)
-                parsed["engine"] = f"Gemini Cloud ({GEMINI_MODEL})"
-                return jsonify(parsed)
-            except Exception as api_err:
-                print(f"[RoadLens Backend] Gemini API fallback error: {api_err}")
+                    parsed = extract_json_from_text(raw_text)
+                    parsed["engine"] = f"Gemini Cloud ({m})"
+                    return jsonify(parsed)
+                except Exception as api_err:
+                    print(f"[RoadLens Backend] Gemini API model ({m}) error: {api_err}")
 
         # Strategy 3: High-Fidelity Local Simulation Engine
         print(f"[RoadLens Backend] Serving high-fidelity local open-weight vision simulation for: {filename}")
