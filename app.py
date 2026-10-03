@@ -171,6 +171,21 @@ def get_mock_analysis(filename="pothole.jpg"):
         }
 
 
+@app.route("/", methods=["GET"])
+def index():
+    """Root route returning API welcome metadata."""
+    return jsonify({
+        "app": "RoadLens AI API",
+        "description": "Open-Source Civic Road Issue Inspection & Multilingual Complaint Generator API",
+        "endpoints": {
+            "health": "/api/health",
+            "analyze": "/api/analyze (POST multipart/form-data or JSON)",
+            "sample_images": "/sample_images/<filename>"
+        },
+        "docs": "https://github.com/shaikhadnan0123/roadlens-gemma"
+    })
+
+
 @app.route("/api/health", methods=["GET"])
 def health_check():
     """Health check route displaying open-source Ollama & Gemini model status."""
