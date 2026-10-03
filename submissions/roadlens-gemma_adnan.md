@@ -2,7 +2,7 @@
 
 ## Team / attendee
 
-- Team name (if applicable): Team RoadLens
+- Team name (if applicable): Solo (Individual Participant)
 - Members and GitHub usernames: Shaikh Adnan (@shaikhadnan0123)
 - Profile links (optional): https://github.com/shaikhadnan0123
 
