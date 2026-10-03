@@ -1,10 +1,11 @@
 import React, { useRef } from 'react';
-import { Upload, Image as ImageIcon, Zap, AlertCircle, CheckCircle2 } from 'lucide-react';
+import { Upload, Image as ImageIcon, Zap, CheckCircle2 } from 'lucide-react';
+import DecodeText from './DecodeText';
 
 const SAMPLES = [
-  { id: 'pothole.jpg', label: 'Deep Pothole', category: 'Asphalt Hazard', path: '/sample_images/pothole.jpg' },
-  { id: 'waterlogging.jpg', label: 'Waterlogging', category: 'Drainage Defect', path: '/sample_images/waterlogging.jpg' },
-  { id: 'broken_sign.jpg', label: 'Broken Sign', category: 'Traffic Signage', path: '/sample_images/broken_sign.jpg' },
+  { id: 'pothole.jpg', label: 'DEEP POTHOLE', category: 'ASPHALT HAZARD', path: '/sample_images/pothole.jpg' },
+  { id: 'waterlogging.jpg', label: 'WATERLOGGING', category: 'DRAINAGE DEFECT', path: '/sample_images/waterlogging.jpg' },
+  { id: 'broken_sign.jpg', label: 'BROKEN SIGN', category: 'TRAFFIC SIGNAGE', path: '/sample_images/broken_sign.jpg' },
 ];
 
 export default function ImageUploader({ selectedImage, onSelectFile, onSelectSample, isLoading, onAnalyze }) {
@@ -32,13 +33,15 @@ export default function ImageUploader({ selectedImage, onSelectFile, onSelectSam
       
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <div>
-          <h2 style={{ fontSize: '1.25rem', fontWeight: 700 }}>1. Upload Road Hazard Photo</h2>
-          <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>
+          <h2 className="lbl" style={{ fontSize: '1.1rem', color: '#ffffff', letterSpacing: '0.12em' }}>
+            <DecodeText text="1. UPLOAD ROAD HAZARD PHOTO" />
+          </h2>
+          <p style={{ fontSize: '0.82rem', color: 'var(--text-muted)', marginTop: '4px' }}>
             Provide an image of asphalt defects, waterlogging, or broken public signage
           </p>
         </div>
-        <span className="badge" style={{ background: 'rgba(56, 189, 248, 0.1)', color: 'var(--accent-cyan)' }}>
-          Max 10MB JPG/PNG
+        <span className="badge-pill badge-medium">
+          MAX 10MB JPG/PNG
         </span>
       </div>
 
@@ -49,13 +52,13 @@ export default function ImageUploader({ selectedImage, onSelectFile, onSelectSam
         onClick={() => fileInputRef.current?.click()}
         style={{
           position: 'relative',
-          border: selectedImage ? '2px solid var(--accent-cyan)' : '2px dashed rgba(255, 255, 255, 0.15)',
-          borderRadius: 'var(--radius-md)',
+          border: selectedImage ? '1px solid var(--accent-cyan)' : '1px dashed rgba(255, 255, 255, 0.18)',
+          borderRadius: '12px',
           padding: selectedImage ? '16px' : '36px 20px',
           textAlign: 'center',
           cursor: 'pointer',
-          background: selectedImage ? 'rgba(15, 23, 42, 0.9)' : 'rgba(15, 23, 42, 0.4)',
-          transition: 'all 0.25s ease',
+          background: selectedImage ? 'rgba(10, 14, 18, 0.9)' : 'rgba(10, 14, 18, 0.4)',
+          transition: 'all 0.25s var(--e-soft)',
           minHeight: '220px',
           display: 'flex',
           flexDirection: 'column',
@@ -72,7 +75,7 @@ export default function ImageUploader({ selectedImage, onSelectFile, onSelectSam
           style={{ display: 'none' }}
         />
 
-        {isLoading && <div className="scanning-overlay" />}
+        {isLoading && <div className="scanning-laser" />}
 
         {selectedImage ? (
           <div style={{ position: 'relative', width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px' }}>
@@ -83,33 +86,34 @@ export default function ImageUploader({ selectedImage, onSelectFile, onSelectSam
                 maxHeight: '260px',
                 maxWidth: '100%',
                 objectFit: 'contain',
-                borderRadius: 'var(--radius-sm)',
-                boxShadow: '0 4px 20px rgba(0,0,0,0.5)'
+                borderRadius: '8px',
+                boxShadow: '0 10px 30px rgba(0,0,0,0.6)'
               }}
             />
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.85rem', color: 'var(--accent-cyan)' }}>
-              <CheckCircle2 size={16} /> Selected: {selectedImage.name}
+            <div className="lbl" style={{ fontSize: '0.78rem', color: 'var(--accent-cyan)', display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <CheckCircle2 size={14} /> SELECTED: {selectedImage.name.toUpperCase()}
             </div>
           </div>
         ) : (
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px' }}>
             <div style={{
-              width: '54px',
-              height: '54px',
-              borderRadius: '50%',
-              background: 'rgba(56, 189, 248, 0.1)',
+              width: '52px',
+              height: '52px',
+              background: 'rgba(255, 255, 255, 0.05)',
+              border: '1px solid var(--line)',
+              clipPath: 'polygon(6px 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%, 0 6px)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               color: 'var(--accent-cyan)'
             }}>
-              <Upload size={28} />
+              <Upload size={24} />
             </div>
             <div>
-              <p style={{ fontWeight: 600, fontSize: '0.98rem', color: '#f8fafc' }}>
-                Drag and drop road photo here
+              <p className="lbl" style={{ fontSize: '0.9rem', color: '#ffffff' }}>
+                <DecodeText text="DRAG AND DROP ROAD PHOTO HERE" />
               </p>
-              <p style={{ fontSize: '0.82rem', color: 'var(--text-muted)', marginTop: '4px' }}>
+              <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '4px' }}>
                 or click to browse local files
               </p>
             </div>
@@ -119,7 +123,7 @@ export default function ImageUploader({ selectedImage, onSelectFile, onSelectSam
 
       {/* Quick Select Demo Samples */}
       <div>
-        <p style={{ fontSize: '0.82rem', fontWeight: 600, color: 'var(--text-muted)', marginBottom: '10px' }}>
+        <p className="lbl" style={{ fontSize: '0.75rem', color: 'var(--text-dim)', marginBottom: '10px' }}>
           OR QUICK-TEST WITH SAMPLE DEMO PHOTOS:
         </p>
 
@@ -128,21 +132,23 @@ export default function ImageUploader({ selectedImage, onSelectFile, onSelectSam
             <button
               key={sample.id}
               type="button"
-              className={`btn-secondary ${selectedImage?.sampleId === sample.id ? 'active' : ''}`}
+              className={`pill-btn ${selectedImage?.sampleId === sample.id ? 'pill-cream' : ''}`}
               onClick={() => onSelectSample(sample)}
               style={{
+                height: 'auto',
+                padding: '10px 12px',
                 flexDirection: 'column',
                 alignItems: 'flex-start',
-                padding: '10px 12px',
-                textAlign: 'left',
-                height: '100%'
+                textAlign: 'left'
               }}
             >
               <div style={{ display: 'flex', alignItems: 'center', gap: '6px', width: '100%' }}>
-                <ImageIcon size={14} color="var(--accent-cyan)" />
-                <span style={{ fontWeight: 700, fontSize: '0.85rem' }}>{sample.label}</span>
+                <ImageIcon size={14} color={selectedImage?.sampleId === sample.id ? 'var(--ink)' : 'var(--accent-cyan)'} />
+                <span className="lbl" style={{ fontSize: '0.78rem' }}>
+                  <DecodeText text={sample.label} />
+                </span>
               </div>
-              <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)', marginTop: '4px' }}>
+              <span style={{ fontSize: '0.7rem', opacity: 0.7, marginTop: '4px' }}>
                 {sample.category}
               </span>
             </button>
@@ -153,26 +159,28 @@ export default function ImageUploader({ selectedImage, onSelectFile, onSelectSam
       {/* Analyze Trigger Button */}
       <button
         type="button"
-        className="btn-primary"
+        className="btn-cta lbl"
         disabled={!selectedImage || isLoading}
         onClick={onAnalyze}
-        style={{ width: '100%', marginTop: '6px', height: '48px' }}
+        style={{ width: '100%', marginTop: '6px' }}
       >
         {isLoading ? (
           <>
             <div style={{
-              width: '18px',
-              height: '18px',
+              width: '16px',
+              height: '16px',
               border: '2px solid rgba(255,255,255,0.3)',
               borderTopColor: '#fff',
               borderRadius: '50%',
-              animation: 'spin 0.8s linear infinite'
+              animation: 'spin 0.8s linear infinite',
+              marginRight: '8px'
             }} />
-            Analyzing with Gemma 4...
+            <DecodeText text="ANALYZING WITH GEMMA 4..." />
           </>
         ) : (
           <>
-            <Zap size={18} /> Run Gemma 4 Inspection
+            <Zap size={16} style={{ marginRight: '8px' }} color="var(--accent-cyan)" />
+            <DecodeText text="RUN GEMMA 4 INSPECTION" />
           </>
         )}
       </button>

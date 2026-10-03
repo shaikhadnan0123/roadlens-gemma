@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Code, ChevronDown, ChevronUp, Copy, Check } from 'lucide-react';
+import DecodeText from './DecodeText';
 
 export default function JsonInspector({ result }) {
   if (!result) return null;
@@ -16,7 +17,7 @@ export default function JsonInspector({ result }) {
   };
 
   return (
-    <div className="glass-panel" style={{ padding: '16px 20px', borderRadius: 'var(--radius-md)' }}>
+    <div className="glass-panel" style={{ padding: '16px 20px', borderRadius: '12px' }}>
       <div
         onClick={() => setIsOpen(!isOpen)}
         style={{
@@ -27,28 +28,30 @@ export default function JsonInspector({ result }) {
           userSelect: 'none'
         }}
       >
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <Code size={18} color="var(--accent-cyan)" />
-          <span style={{ fontWeight: 700, fontSize: '0.92rem' }}>Gemma 4 Structured JSON Output</span>
-          <span className="badge" style={{ background: 'rgba(16, 185, 129, 0.15)', color: '#6ee7b7' }}>
-            Validated Schema
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <Code size={16} color="var(--accent-cyan)" />
+          <span className="lbl" style={{ fontSize: '0.92rem', color: '#ffffff', letterSpacing: '0.12em' }}>
+            <DecodeText text="GEMMA 4 STRUCTURED JSON OUTPUT" />
+          </span>
+          <span className="badge-pill badge-medium">
+            VALIDATED SCHEMA
           </span>
         </div>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
           <button
             type="button"
-            className="btn-secondary"
+            className="pill-btn lbl"
             onClick={(e) => {
               e.stopPropagation();
               handleCopyJson();
             }}
-            style={{ padding: '4px 10px', fontSize: '0.75rem' }}
+            style={{ height: '30px', padding: '0 10px', fontSize: '10px' }}
           >
             {copied ? <Check size={12} color="var(--accent-emerald)" /> : <Copy size={12} />}
-            {copied ? 'Copied' : 'Copy JSON'}
+            <DecodeText text={copied ? 'COPIED' : 'COPY JSON'} />
           </button>
-          {isOpen ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
+          {isOpen ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
         </div>
       </div>
 
@@ -56,10 +59,10 @@ export default function JsonInspector({ result }) {
         <pre style={{
           marginTop: '14px',
           padding: '16px',
-          background: '#040711',
-          borderRadius: 'var(--radius-sm)',
-          border: '1px solid var(--border-muted)',
-          color: '#38bdf8',
+          background: '#04070d',
+          borderRadius: '8px',
+          border: '1px solid var(--line)',
+          color: 'var(--accent-cyan)',
           fontSize: '0.82rem',
           fontFamily: 'Consolas, Monaco, monospace',
           overflowX: 'auto',

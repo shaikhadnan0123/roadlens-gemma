@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Camera, ShieldAlert, Cpu, Sparkles, Activity } from 'lucide-react';
+import { Camera, Cpu, Activity, Sparkles } from 'lucide-react';
+import DecodeText from './DecodeText';
 
 export default function Header() {
   const [backendStatus, setBackendStatus] = useState('checking');
-  const [sdkInfo, setSdkInfo] = useState('Gemma 4');
+  const [sdkInfo, setSdkInfo] = useState('GEMMA 4 VISION');
 
   useEffect(() => {
     fetch('http://localhost:5000/api/health')
@@ -11,7 +12,7 @@ export default function Header() {
       .then((data) => {
         if (data.status === 'online') {
           setBackendStatus('online');
-          setSdkInfo(data.sdk || 'Gemma 4 Multimodal');
+          setSdkInfo((data.sdk || 'GEMMA 4 VISION').toUpperCase());
         } else {
           setBackendStatus('offline');
         }
@@ -20,69 +21,55 @@ export default function Header() {
   }, []);
 
   return (
-    <header className="glass-panel" style={{ padding: '16px 28px', marginBottom: '28px', borderRadius: 'var(--radius-lg)' }}>
+    <header className="glass-panel" style={{ padding: '16px 28px', marginBottom: '24px', position: 'relative' }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '16px' }}>
         
         {/* Brand identity */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
           <div style={{
-            background: 'linear-gradient(135deg, #0284c7 0%, #a855f7 100%)',
-            width: '46px',
-            height: '46px',
-            borderRadius: '14px',
+            width: '42px',
+            height: '42px',
+            background: 'var(--cream)',
+            clipPath: 'polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px))',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            boxShadow: '0 0 20px rgba(56, 189, 248, 0.4)'
+            color: 'var(--ink)'
           }}>
-            <Camera size={26} color="#ffffff" />
+            <Camera size={22} />
           </div>
 
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-              <h1 style={{ fontSize: '1.6rem', fontWeight: 800, background: 'linear-gradient(90deg, #ffffff, #7dd3fc)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
-                RoadLens AI
+              <h1 className="lbl" style={{ fontSize: '1.4rem', color: '#ffffff', letterSpacing: '0.15em' }}>
+                <DecodeText text="ROADLENS AI" />
               </h1>
-              <span className="badge" style={{ background: 'rgba(168, 85, 247, 0.2)', color: '#d8b4fe', border: '1px solid rgba(168, 85, 247, 0.4)' }}>
-                <Sparkles size={12} /> Gemma 4 Vision
+              <span className="badge-pill badge-medium">
+                <Sparkles size={11} /> GEMMA 4 VISION
               </span>
             </div>
-            <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>
+            <p style={{ fontSize: '0.82rem', color: 'var(--text-muted)', marginTop: '2px' }}>
               Multimodal Civic Road Hazard Inspection & Instant Complaint Generator
             </p>
           </div>
         </div>
 
-        {/* Backend & Gemma Engine status */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '8px',
-            padding: '6px 14px',
-            background: 'rgba(15, 23, 42, 0.6)',
-            borderRadius: 'var(--radius-full)',
-            border: '1px solid var(--border-muted)',
-            fontSize: '0.82rem'
-          }}>
-            <Cpu size={15} color="var(--accent-cyan)" />
-            <span style={{ color: 'var(--text-muted)' }}>Engine:</span>
-            <span style={{ fontWeight: 600, color: 'var(--accent-cyan)' }}>{sdkInfo}</span>
+        {/* Status Pills */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <div className="pill-btn lbl" style={{ cursor: 'default' }}>
+            <Cpu size={14} color="var(--accent-cyan)" />
+            <span style={{ color: 'var(--text-dim)' }}>ENGINE:</span>
+            <span style={{ color: 'var(--accent-cyan)' }}><DecodeText text={sdkInfo} /></span>
           </div>
 
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '8px',
-            padding: '6px 14px',
-            background: backendStatus === 'online' ? 'rgba(16, 185, 129, 0.12)' : 'rgba(244, 63, 94, 0.12)',
-            borderRadius: 'var(--radius-full)',
-            border: `1px solid ${backendStatus === 'online' ? 'rgba(16, 185, 129, 0.3)' : 'rgba(244, 63, 94, 0.3)'}`,
-            fontSize: '0.82rem'
+          <div className="pill-btn lbl" style={{
+            cursor: 'default',
+            borderColor: backendStatus === 'online' ? 'rgba(16, 185, 129, 0.35)' : 'rgba(244, 63, 94, 0.35)',
+            background: backendStatus === 'online' ? 'rgba(16, 185, 129, 0.08)' : 'rgba(244, 63, 94, 0.08)'
           }}>
-            <Activity size={15} color={backendStatus === 'online' ? 'var(--accent-emerald)' : 'var(--accent-rose)'} />
-            <span style={{ color: backendStatus === 'online' ? '#6ee7b7' : '#fda4af', fontWeight: 600 }}>
-              {backendStatus === 'online' ? 'Backend Live' : 'Backend Connecting...'}
+            <Activity size={14} color={backendStatus === 'online' ? 'var(--accent-emerald)' : 'var(--accent-rose)'} />
+            <span style={{ color: backendStatus === 'online' ? '#6ee7b7' : '#fda4af' }}>
+              <DecodeText text={backendStatus === 'online' ? 'BACKEND LIVE' : 'CONNECTING...'} />
             </span>
           </div>
         </div>

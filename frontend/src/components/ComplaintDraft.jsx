@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { FileText, Copy, Check, Globe, Send, Edit3 } from 'lucide-react';
+import DecodeText from './DecodeText';
 
 export default function ComplaintDraft({ result }) {
   if (!result || !result.complaint_drafts) return null;
@@ -9,7 +10,6 @@ export default function ComplaintDraft({ result }) {
   const [draftText, setDraftText] = useState(drafts.english || '');
   const [copied, setCopied] = useState(false);
 
-  // Update text when language or result changes
   useEffect(() => {
     setDraftText(drafts[activeLang] || drafts.english || '');
   }, [activeLang, result]);
@@ -26,49 +26,49 @@ export default function ComplaintDraft({ result }) {
       {/* Header & Language Switcher */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '12px' }}>
         <div>
-          <h2 style={{ fontSize: '1.25rem', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <FileText size={20} color="var(--accent-cyan)" />
-            Generated Civic Complaint Draft
+          <h2 className="lbl" style={{ fontSize: '1.15rem', color: '#ffffff', letterSpacing: '0.12em', display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <FileText size={18} color="var(--accent-cyan)" />
+            <DecodeText text="GENERATED CIVIC COMPLAINT DRAFT" />
           </h2>
-          <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>
+          <p style={{ fontSize: '0.82rem', color: 'var(--text-muted)', marginTop: '4px' }}>
             Gemma 4 auto-drafted complaint ready for municipal portal submission. Edit as needed.
           </p>
         </div>
 
-        {/* Multilingual Toggle (English, Telugu, Hindi) */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', background: 'rgba(15, 23, 42, 0.7)', padding: '4px', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-muted)' }}>
-          <Globe size={14} color="var(--text-muted)" style={{ marginLeft: '6px' }} />
+        {/* Multilingual Toggle */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', background: 'rgba(10, 14, 18, 0.6)', padding: '4px', borderRadius: '8px', border: '1px solid var(--line)' }}>
+          <Globe size={14} color="var(--text-dim)" style={{ marginLeft: '6px' }} />
           
           <button
             type="button"
-            className={`btn-secondary ${activeLang === 'english' ? 'active' : ''}`}
+            className={`pill-btn lbl ${activeLang === 'english' ? 'pill-cream' : ''}`}
             onClick={() => setActiveLang('english')}
-            style={{ padding: '4px 12px', fontSize: '0.8rem', borderRadius: 'var(--radius-sm)' }}
+            style={{ height: '30px', padding: '0 10px', fontSize: '10px' }}
           >
-            English
+            <DecodeText text="ENGLISH" />
           </button>
           
           <button
             type="button"
-            className={`btn-secondary ${activeLang === 'telugu' ? 'active' : ''}`}
+            className={`pill-btn lbl ${activeLang === 'telugu' ? 'pill-cream' : ''}`}
             onClick={() => setActiveLang('telugu')}
-            style={{ padding: '4px 12px', fontSize: '0.8rem', borderRadius: 'var(--radius-sm)' }}
+            style={{ height: '30px', padding: '0 10px', fontSize: '10px' }}
           >
-            తెలుగు (Telugu)
+            <DecodeText text="TELUGU" />
           </button>
 
           <button
             type="button"
-            className={`btn-secondary ${activeLang === 'hindi' ? 'active' : ''}`}
+            className={`pill-btn lbl ${activeLang === 'hindi' ? 'pill-cream' : ''}`}
             onClick={() => setActiveLang('hindi')}
-            style={{ padding: '4px 12px', fontSize: '0.8rem', borderRadius: 'var(--radius-sm)' }}
+            style={{ height: '30px', padding: '0 10px', fontSize: '10px' }}
           >
-            हिंदी (Hindi)
+            <DecodeText text="HINDI" />
           </button>
         </div>
       </div>
 
-      {/* Editable Complaint Area */}
+      {/* Editable Textarea */}
       <div style={{ position: 'relative' }}>
         <textarea
           value={draftText}
@@ -76,45 +76,45 @@ export default function ComplaintDraft({ result }) {
           rows={7}
           style={{
             width: '100%',
-            background: 'rgba(15, 23, 42, 0.8)',
-            border: '1px solid var(--border-muted)',
-            borderRadius: 'var(--radius-md)',
+            background: 'rgba(10, 14, 18, 0.85)',
+            border: '1px solid var(--line)',
+            borderRadius: '8px',
             padding: '16px',
-            color: '#f8fafc',
+            color: '#ffffff',
             fontFamily: 'inherit',
             fontSize: '0.9rem',
             lineHeight: '1.6',
             resize: 'vertical',
             outline: 'none',
-            boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.4)'
+            boxShadow: 'inset 0 2px 6px rgba(0,0,0,0.5)'
           }}
         />
-        <div style={{ position: 'absolute', right: '12px', bottom: '16px', display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.75rem', color: 'var(--text-dim)' }}>
-          <Edit3 size={12} /> Editable
+        <div className="lbl" style={{ position: 'absolute', right: '12px', bottom: '16px', display: 'flex', alignItems: 'center', gap: '6px', fontSize: '10px', color: 'var(--text-dim)' }}>
+          <Edit3 size={11} /> <DecodeText text="EDITABLE" />
         </div>
       </div>
 
       {/* Actions */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '12px' }}>
         <div style={{ fontSize: '0.82rem', color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: '6px' }}>
-          <span>Authority Target:</span>
+          <span>TARGET AUTHORITY:</span>
           <strong style={{ color: 'var(--accent-cyan)' }}>{result.authority || 'GHMC Municipal Corporation'}</strong>
         </div>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
           <button
             type="button"
-            className="btn-secondary"
+            className="pill-btn lbl"
             onClick={handleCopy}
-            style={{ minWidth: '150px' }}
+            style={{ height: '38px', minWidth: '170px' }}
           >
             {copied ? (
               <>
-                <Check size={16} color="var(--accent-emerald)" /> Copied to Clipboard!
+                <Check size={14} color="var(--accent-emerald)" /> <DecodeText text="COPIED TO CLIPBOARD" />
               </>
             ) : (
               <>
-                <Copy size={16} /> Copy Complaint Text
+                <Copy size={14} /> <DecodeText text="COPY COMPLAINT TEXT" />
               </>
             )}
           </button>
@@ -123,10 +123,10 @@ export default function ComplaintDraft({ result }) {
             href="https://www.ghmc.gov.in/"
             target="_blank"
             rel="noopener noreferrer"
-            className="btn-primary"
-            style={{ textDecoration: 'none', padding: '10px 18px', fontSize: '0.88rem' }}
+            className="btn-cta lbl"
+            style={{ height: '38px', fontSize: '11px' }}
           >
-            <Send size={15} /> Submit to Portal
+            <Send size={14} style={{ marginRight: '6px' }} /> <DecodeText text="SUBMIT TO PORTAL" />
           </a>
         </div>
       </div>
